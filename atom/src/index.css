@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: all;
+}
+
+@theme {
+  --font-monda: "Monda", sans-serif;
+  --font-montez: "Montez", cursive;
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-subrayada: "Montserrat Subrayada", sans-serif;
+  --font-open-sans: "Open Sans", sans-serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-tektur: "Tektur", cursive;
+}

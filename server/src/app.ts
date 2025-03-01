@@ -1,6 +1,6 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
-import { UserModel } from "./modules/user/user.model";
+import router from "./routes/MainRoutes";
 
 export const app = express();
 app.use(express.json());
@@ -12,26 +12,13 @@ app.get('/', async (req, res) => {
     res.send({
         msg: "Server is working..."
     })
-})
+});
 
-export interface Root {
-    id: number
-    first_name: string
-    last_name: string
-    username: string
-    language_code: string
-    allows_write_to_pm: boolean
-    photo_url: string
-  }
-  
-app.post('/user', async (req, res) => {
-    console.log(req.body);
-    const userBody: Root = req.body.user;
-    const ress = await UserModel.create({
-        name: userBody.first_name + " "+ userBody.last_name,
-        uid: userBody.id,
-        username: userBody.username,
-        referCode: 'siam'
+app.use("/api/v1", router);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    res.status(500).send({
+        status: false,
+        msg: err.message
     })
-    res.send({msg: "success", data: ress})
 })

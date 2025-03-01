@@ -9,7 +9,8 @@ export interface user {
     referCode: string
     referBy?: string
     spinCredit: number
-    adsWatched: number
+    adsWatched: number,
+    lastSeen: Date
 }
 
 const schema = new Schema<user>({
@@ -23,7 +24,9 @@ const schema = new Schema<user>({
     },
     uid: {
         type: Number,
-        required: true
+        required: true,
+        unique: true,
+        indexes: true
     },
     balance: {
         type: Number,
@@ -53,7 +56,12 @@ const schema = new Schema<user>({
         required: true,
         default: 0
     },
-},{
+    lastSeen: {
+        type: Date,
+        required: true,
+        default: 1740823892
+    }
+}, {
     timestamps: true
 });
 

@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "./component/layouts/AppLayout";
 import Splash from "./pages/app/Splash";
-import App from "./pages/app";
 import Spin from "./pages/app/Spin";
 import Task from "./pages/app/Task";
 import Invite from "./pages/app/Invite";
 import TonTransection from "./pages/app/TonTransection";
+import ProtectUser from "./utils/ProtectUser";
+import App from "./pages/App";
 
 const route = createBrowserRouter([
     {
@@ -14,7 +15,7 @@ const route = createBrowserRouter([
     },
     {
         path: '/app',
-        element: <AppLayout />,
+        element: <ProtectUser><AppLayout /></ProtectUser>,
         children: [
             {
                 path: 'spin',

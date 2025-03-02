@@ -7,6 +7,7 @@ import Invite from "./pages/app/Invite";
 import TonTransection from "./pages/app/TonTransection";
 import ProtectUser from "./utils/ProtectUser";
 import App from "./pages/App";
+import Home from "./pages/app/Home";
 
 const route = createBrowserRouter([
     {
@@ -20,6 +21,10 @@ const route = createBrowserRouter([
             {
                 path: 'spin',
                 element: <Spin />
+            },
+            {
+                index: true, 
+                element: <Home />
             },
             {
                 path: 'task',

@@ -8,6 +8,10 @@ import TonTransection from "./pages/app/TonTransection";
 import ProtectUser from "./utils/ProtectUser";
 import App from "./pages/App";
 import Home from "./pages/app/Home";
+import AdminLayout from "./component/layouts/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import AddNewTask from "./pages/admin/AddNewTask";
+import TaskManagement from "./pages/admin/Task";
 
 const route = createBrowserRouter([
     {
@@ -23,7 +27,7 @@ const route = createBrowserRouter([
                 element: <Spin />
             },
             {
-                index: true, 
+                index: true,
                 element: <Home />
             },
             {
@@ -37,6 +41,24 @@ const route = createBrowserRouter([
             {
                 path: 'ton',
                 element: <TonTransection />
+            },
+        ]
+    },
+    {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+            {
+                index: true,
+                element: <Dashboard />
+            },
+            {
+                path: "task/new",
+                element: <AddNewTask/>
+            },
+            {
+                path: "task",
+                element: <TaskManagement/>
             },
         ]
     },

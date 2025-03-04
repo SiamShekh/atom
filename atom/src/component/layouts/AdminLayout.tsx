@@ -40,7 +40,7 @@ const AdminLayout = () => {
                 },
                 {
                     label: "Create Task",
-                    href: "/admin/map"
+                    href: "/admin/task/new"
                 },
             ]
         },

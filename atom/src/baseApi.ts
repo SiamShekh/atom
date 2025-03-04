@@ -3,6 +3,7 @@ import Env from './environment';
 
 const baseApi = createApi({
   reducerPath: "api",
+  tagTypes: ["task"],
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.DEV ? Env.dev : Env.live,
 

@@ -4,5 +4,7 @@ import { adminTask } from "../modules/task/task.services.admin";
 
 const TaskRoute = Router();
 TaskRoute.post("/", adminTask.createTask);
+TaskRoute.get("/", adminTask.getAll);
+TaskRoute.delete("/", adminTask.deleteTask);
 
 export default TaskRoute;

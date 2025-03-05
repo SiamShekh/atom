@@ -36,7 +36,7 @@ const AdminLayout = () => {
             children: [
                 {
                     label: "Show Task",
-                    href: "/admin/map"
+                    href: "/admin/task"
                 },
                 {
                     label: "Create Task",
@@ -93,7 +93,7 @@ const AdminLayout = () => {
                         ))}
                     </Menu>
                 </Sidebar>
-                <main style={{ padding: 10 }}><Outlet /></main>
+                <main className="p-2 w-full"><Outlet /></main>
             </div>
         </div>
     );

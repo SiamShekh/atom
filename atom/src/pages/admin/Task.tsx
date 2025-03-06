@@ -1,9 +1,10 @@
 import { MdDelete, MdEdit } from "react-icons/md";
-import { deleteTask, getAllTaskAdmin } from "../../api/task";
+import { deleteTask, getAllTaskAdmin } from "../../api/task.admin";
 import { task } from "../../types";
 import { useEffect } from "react";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const Loading = () => (
     <div className="flex items-center justify-between w-full gap-2 bg-white/10 p-2 rounded-md mt-1">
@@ -24,6 +25,7 @@ const Loading = () => (
 const Task = () => {
     const { data: taskData, isLoading } = getAllTaskAdmin(undefined);
     const [deleteMutation, { status }] = deleteTask();
+    const navigate = useNavigate();
 
     useEffect(() => {
         switch (status) {
@@ -40,7 +42,8 @@ const Task = () => {
                 toast.loading("Loading.");
                 break;
         }
-    }, [status])
+    }, [status]);
+
     return (
         <div className="">
             {
@@ -66,7 +69,7 @@ const Task = () => {
                                     <button onClick={() => deleteMutation(task._id)} className="bg-white/10 px-3 py-1 rounded-full text-sm font-montserrat font-medium">
                                         <MdDelete />
                                     </button>
-                                    <button className="bg-white/10 px-3 py-1 rounded-full text-sm font-montserrat font-medium">
+                                    <button onClick={()=> navigate(`/admin/task/update/${task?._id}`)} className="bg-white/10 px-3 py-1 rounded-full text-sm font-montserrat font-medium">
                                         <MdEdit />
                                     </button>
                                 </div>

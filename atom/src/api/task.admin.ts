@@ -14,7 +14,7 @@ const task = baseApi.injectEndpoints({
             query: (arg) => ({
                 url: "task",
                 method: "DELETE",
-                body: {taskId: arg}
+                body: { taskId: arg }
             }),
             invalidatesTags: ["task"]
         }),
@@ -25,11 +25,30 @@ const task = baseApi.injectEndpoints({
             }),
             providesTags: ["task"]
         }),
+        getSingleTask: build.query({
+            query: (arg) => ({
+                url: "task/admin",
+                method: "GET",
+                params: { id: arg }
+            }),
+            providesTags: ["task"]
+        }),
+        updateTask: build.mutation({
+            query: (arg) => ({
+                url: "task",
+                method: "PATCH",
+                body: arg.body,
+                params: { id: arg.id }
+            }),
+            invalidatesTags: ["task"]
+        }),
     })
 });
 
 export const {
     useCreateTaskMutation: createTaskAdmin,
     useGetAllTaskQuery: getAllTaskAdmin,
-    useDeleteTaskMutation: deleteTask
+    useDeleteTaskMutation: deleteTask,
+    useLazyGetSingleTaskQuery: singleTask,
+    useUpdateTaskMutation: updateTask
 } = task;

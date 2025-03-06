@@ -1,11 +1,26 @@
 import { FieldValues, useForm } from "react-hook-form";
+import { singleTask, updateTask } from "../../api/task.admin";
 import { useEffect } from "react";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
-import { createTaskAdmin } from "../../api/task.admin";
+import { useParams } from "react-router-dom";
 
-const AddNewTask = () => {
+const UpdateTask = () => {
     const { register, handleSubmit, reset } = useForm();
+    const { id } = useParams();
+    const [query, { data, isLoading }] = singleTask();
+
+    useEffect(() => {
+        if (id) {
+            query(id);
+        }
+    }, [id, query]);
+
+    useEffect(() => {
+        if (data) {
+            reset(data);
+        }
+    }, [data, reset])
 
     const arr = [
         {
@@ -26,11 +41,13 @@ const AddNewTask = () => {
     ];
 
     const options = ["telegram", "x", "visit", "youtube", "discord"];
-    const [mutation, { status }] = createTaskAdmin();
+    const [mutation, { status }] = updateTask();
 
     const createTask = (e: FieldValues) => {
-        console.log(e);
-        mutation(e);
+        mutation({
+            id: id,
+            body: e
+        });
     }
 
     useEffect(() => {
@@ -41,7 +58,7 @@ const AddNewTask = () => {
                 break;
             case QueryStatus.fulfilled:
                 toast.dismiss();
-                toast.success("Successfuly created new task.");
+                toast.success("Successfuly update task.");
                 reset();
                 break;
             case QueryStatus.rejected:
@@ -53,7 +70,14 @@ const AddNewTask = () => {
     }, [status, reset])
 
     return (
-        <form onSubmit={handleSubmit(createTask)}>
+        <form onSubmit={handleSubmit(createTask)} className="relative">
+            {
+                isLoading &&
+                <div className="flex justify-center items-center">
+                    <span className="loading loading-spinner loading-lg "></span>
+                </div>
+            }
+
             {
                 arr.map((fields) => (
                     <div className=" mt-3" key={fields.key}>
@@ -72,9 +96,16 @@ const AddNewTask = () => {
                     }
                 </select>
             </div>
-            <button type="submit" className="font-montserrat font-medium lg:min-w-md w-full p-2 bg-white/10 mt-5 rounded-lg">Create Task</button>
+            <div className="mt-3">
+                <p className="capitalize mb-1">select the type</p>
+                <select {...register("isPublish")} className="outline-0 bg-white/10 p-2 rounded-lg lg:min-w-md w-full capitalize">
+                    <option value={"false"}>NO</option>
+                    <option value={"true"}>YES</option>
+                </select>
+            </div>
+            <button type="submit" className="font-montserrat font-medium lg:min-w-md w-full p-2 bg-white/10 mt-5 rounded-lg">Update Task</button>
         </form>
     );
 };
 
-export default AddNewTask;
+export default UpdateTask;

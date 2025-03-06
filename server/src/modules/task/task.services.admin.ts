@@ -35,8 +35,31 @@ const deleteTask = catchAsync(async (req, res) => {
     res.send(deleteTask);
 });
 
+const getSingle = catchAsync(async (req, res) => {
+    const id = req.query.id;
+    if (!id) {
+        throw new Error("task id not found.");
+    }
+
+    const task = await TaskModel.findById(id);
+    res.send(task);
+});
+
+const updateTask = catchAsync(async (req, res) => {
+    const id = req.query.id;
+    if (!id) {
+        throw new Error("task id not found.");
+    }
+
+    const task = await TaskModel.findByIdAndUpdate(id, req.body);
+    res.send(task);
+});
+
+
 export const adminTask = {
     createTask,
     getAll,
-    deleteTask
+    deleteTask,
+    getSingle,
+    updateTask
 }

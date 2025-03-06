@@ -12,6 +12,7 @@ import AdminLayout from "./component/layouts/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import AddNewTask from "./pages/admin/AddNewTask";
 import TaskManagement from "./pages/admin/Task";
+import UpdateTask from "./pages/admin/UpdateTask";
 
 const route = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const route = createBrowserRouter([
             {
                 path: "task",
                 element: <TaskManagement/>
+            },
+            {
+                path: "task/update/:id",
+                element: <UpdateTask/>
             },
         ]
     },

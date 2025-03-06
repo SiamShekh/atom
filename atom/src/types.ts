@@ -6,6 +6,7 @@ export interface task {
     reward: number
     isPublish: boolean
     isDelete: boolean
+    isComplete?: boolean
     createdAt: string
   updatedAt: string
   __v: number

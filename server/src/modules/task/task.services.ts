@@ -2,7 +2,7 @@ import catchAsync from "../../utils/catch_async";
 import { TaskModel } from "./task.model";
 
 const getTask = catchAsync(async (req, res) => {
-    const completedTask = await TaskModel.find({ isPublish: true });
+    const completedTask = await TaskModel.find({ isPublish: true, isDelete: false });
     const result = await TaskModel.find({});
 
     const inCompletedTask: any[] = [];

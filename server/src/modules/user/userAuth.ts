@@ -9,7 +9,7 @@ import catchAsync from "../../utils/catch_async";
 export const userIntance = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const session = await mongoose.startSession();
     session.startTransaction();
-    
+
     const userBody = req.body.user;
     if (!isValid(req.body.init, Env.bot_token)) {
         const isUser = await UserModel.findOne({ uid: userBody.id }).session(session);
@@ -53,7 +53,8 @@ export const userIntance = catchAsync(async (req: Request, res: Response, next: 
         res.send({ token });
         return;
     } else {
+        await session.abortTransaction();
+        await session.endSession();
         throw new Error("init token is invaild");
     }
-
 });

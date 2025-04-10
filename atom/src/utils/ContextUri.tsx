@@ -1,20 +1,25 @@
 import { createContext, ReactNode } from "react";
 import { useSettingQuery } from "../api/setting";
-import { setting } from "../types";
+import { setting, user } from "../types";
+import { MyUser } from "../api/user";
 
 interface default_value {
-    setting: undefined | setting
+    setting: undefined | setting,
+    user: undefined | user
 }
 
 export const Provider = createContext<default_value>({
-    setting: undefined
+    setting: undefined,
+    user: undefined
 });
 
 const ContextUri = ({ children }: { children: ReactNode }) => {
     const { data, isLoading } = useSettingQuery(undefined);
+    const { data: user } = MyUser(undefined);
 
     const value: default_value = {
-        setting: data
+        setting: data,
+        user: user
     }
 
     return (

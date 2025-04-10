@@ -22,3 +22,19 @@ export interface setting {
   updatedAt: string
   __v: number
 }
+
+export interface user {
+  _id: string
+  name: string
+  username: string
+  uid: number
+  balance: number
+  referCode: string
+  spinCredit: number
+  adsWatched: number
+  referCount: number
+  lastSeen: string
+  createdAt: string
+  updatedAt: string
+  __v: number
+}

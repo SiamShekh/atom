@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { allTask } from "../../api/task.user";
-import { task } from "../../types";
+import { allTask, compeleteTask } from "../../api/task.user";
+import { CompeletedTask, task } from "../../types";
 import TaskTypeIconGenarator from "../../utils/TaskTypeIconGenarator";
 import WebApp from "@twa-dev/sdk";
 
@@ -21,49 +21,8 @@ const Loading = () => (
 
 const Task = () => {
     const { data, isLoading } = allTask(undefined);
-    const [availableTask, setAvailableTask] = useState<task[]>([]);
-    const [completedTask, setCompletedTask] = useState<task[]>([]);
     const [tab, setTab] = useState<"available" | "complete">("available");
-    const [isLinkOpen, setIsLinkOpen] = useState(false);
-    const [isClaimOpen, setIsClaimOpen] = useState(false);
 
-    useEffect(() => {
-        if (data) {
-            const available = data.filter((task: task) => !task.isComplete);
-            const completed = data.filter((task: task) => task.isComplete);
-
-            setAvailableTask(available);
-            setCompletedTask(completed);
-        }
-    }, [data]);
-
-    const completeTaskHandler = (e: task) => {
-        switch (e.type) {
-            case "telegram":
-                WebApp.openTelegramLink(e.href);
-                setIsLinkOpen(true);
-                break;
-
-            default:
-                WebApp.openLink(e.href);
-                setIsLinkOpen(true);
-                break;
-        }
-    }
-
-    const claimRewards = (e: task) => {
-        console.log("Request For Claim Rewards.");
-
-    }
-
-    useEffect(() => {
-        if (isLinkOpen === true) {
-            setTimeout(() => {
-                setIsLinkOpen(false);
-                setIsClaimOpen(true);
-            }, 5000);
-        }
-    }, [isLinkOpen]);
 
     return (
         <div className="p-3 font-montserrat">
@@ -83,40 +42,33 @@ const Task = () => {
                     <Loading />
                 </> :
                     tab === "available" ?
-                        availableTask?.map((task: task) => (
-                            <div key={task?._id} className="flex justify-between items-center mt-4 gap-2">
-                                <div className="flex items-center gap-2">
-                                    <TaskTypeIconGenarator type={task?.type} />
-                                    <div className="">
-                                        <p className="text-white font-medium line-clamp-1">{task?.title}</p>
-                                        <p className="text-white/60 text-xs">+{task?.reward} ATOM</p>
-                                    </div>
-                                </div>
-                                {
-                                    isLinkOpen ?
-                                        <button className="capitalize bg-white h-8 text-black px-5 py-1 font-montserrat font-medium rounded-full flex justify-center items-center">
-                                            <span className="loading loading-spinner loading-xs"></span>
-                                        </button> :
-                                        isClaimOpen ?
-                                            <button onClick={() => claimRewards(task)} className="capitalize bg-white text-black px-5 h-fit py-1 font-montserrat font-medium rounded-full">claim</button> :
-                                            <button onClick={() => completeTaskHandler(task)} className="capitalize bg-white text-black px-5 h-fit py-1 font-montserrat font-medium rounded-full">start</button>
-                                }
-                            </div>
-                        ))
+                        (
+                            data?.incomplete?.length === 0 ? <div className="flex items-center justify-center mt-10 text-2xl font-semibold">
+                                <p>No data</p>
+                            </div> :
+                                data?.incomplete?.map((task: task) => (
+                                    <TaskItem task={task} key={task?._id} />
+                                ))
+                        )
                         :
-                        completedTask?.map((task: task) => (
-                            <div key={task?._id} className="flex justify-between items-center mt-4 gap-2">
-                                <div className="flex items-center gap-2">
-                                    <TaskTypeIconGenarator type={task?.type} />
-                                    <div className="">
-                                        <p className="text-white font-medium">{task?.title}</p>
-                                        <p className="text-white/60 text-xs">+{task?.reward} ATOM</p>
+                        (
+                            data?.complete?.length === 0 ? <div className="flex items-center justify-center mt-10 text-2xl font-semibold">
+                                <p>No data</p>
+                            </div> :
+                                data?.complete?.map((task: CompeletedTask) => (
+                                    <div key={task?._id} className="flex justify-between items-center mt-4 gap-2">
+                                        <div className="flex items-center gap-2">
+                                            <TaskTypeIconGenarator type={task?.taskId?.type} />
+                                            <div className="">
+                                                <p className="text-white font-medium">{task?.taskId?.title}</p>
+                                                <p className="text-white/60 text-xs">+{task?.taskId?.reward} ATOM</p>
+                                            </div>
+                                        </div>
+                                        <button className="capitalize bg-white h-8 text-black px-5 py-1 font-montserrat font-medium rounded-full"><FaCheckCircle />
+                                        </button>
                                     </div>
-                                </div>
-                                <button className="capitalize bg-white h-8 text-black px-5 py-1 font-montserrat font-medium rounded-full"><FaCheckCircle />
-                                </button>
-                            </div>
-                        ))
+                                ))
+                        )
             }
 
         </div>
@@ -124,3 +76,59 @@ const Task = () => {
 };
 
 export default Task;
+
+const TaskItem = ({ task }: { task: task }) => {
+    const [isLinkOpen, setIsLinkOpen] = useState(false);
+    const [isClaimOpen, setIsClaimOpen] = useState(false);
+    const [claimTask] = compeleteTask();
+
+    const completeTaskHandler = (e: task) => {
+        switch (e.type) {
+            case "telegram":
+                WebApp.openTelegramLink(e.href);
+                setIsLinkOpen(true);
+                break;
+
+            default:
+                WebApp.openLink(e.href);
+                setIsLinkOpen(true);
+                break;
+        }
+    }
+
+    const claimRewards = (e: task) => {
+        console.log("Request For Claim Rewards.");
+        claimTask({ id: e?._id });
+    }
+
+
+    useEffect(() => {
+        if (isLinkOpen === true) {
+            setTimeout(() => {
+                setIsLinkOpen(false);
+                setIsClaimOpen(true);
+            }, 5000);
+        }
+    }, [isLinkOpen]);
+
+    return (
+        <div key={task?._id} className="flex justify-between items-center mt-4 gap-2">
+            <div className="flex items-center gap-2">
+                <TaskTypeIconGenarator type={task?.type} />
+                <div className="">
+                    <p className="text-white font-medium line-clamp-1">{task?.title}</p>
+                    <p className="text-white/60 text-xs">+{task?.reward} ATOM</p>
+                </div>
+            </div>
+            {
+                isLinkOpen ?
+                    <button className="capitalize bg-white h-8 text-black px-5 py-1 font-montserrat font-medium rounded-full flex justify-center items-center">
+                        <span className="loading loading-spinner loading-xs"></span>
+                    </button> :
+                    isClaimOpen ?
+                        <button onClick={() => claimRewards(task)} className="capitalize bg-white text-black px-5 h-fit py-1 font-montserrat font-medium rounded-full">claim</button> :
+                        <button onClick={() => completeTaskHandler(task)} className="capitalize bg-white text-black px-5 h-fit py-1 font-montserrat font-medium rounded-full">start</button>
+            }
+        </div>
+    )
+};

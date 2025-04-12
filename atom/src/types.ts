@@ -38,3 +38,14 @@ export interface user {
   updatedAt: string
   __v: number
 }
+
+
+export interface CompeletedTask {
+  _id: string
+  userId: string
+  taskId: task
+  point: number
+  createdAt: string
+  updatedAt: string
+  __v: number
+}

@@ -1,18 +1,51 @@
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ads_img from "../../assets/trading_image.webp";
+import { useContext } from "react";
+import { Provider } from "../../utils/ContextUri";
+import { useTonConnectUI } from "@tonconnect/ui-react";
 
 const Home = () => {
+    const { user } = useContext(Provider);
+    const [ton] = useTonConnectUI();
+
+    const watch_ads = () => {
+        // show_8930150().then(() => {
+        //     // You need to add your user reward function here, which will be executed after the user watches the ad.
+        //     // For more details, please refer to the detailed instructions.
+        //     alert('You have seen an ad!');
+        // })
+    }
+
+
+
     return (
         <div>
             <div className="bg-[#1AE01A] rounded-b-xl w-full flex items-center justify-between gap-2 p-3">
                 <div className="flex items-center gap-2">
-                    <div className="size-10 rounded-full bg-[#091625] text-white font-montserrat flex justify-center items-center">SA.</div>
+                    <div className="size-10 rounded-full bg-[#091625] text-white font-montserrat flex justify-center items-center">{user?.name?.slice(0, 2)}.</div>
                     <div className="">
-                        <p className="font-montserrat text-[#091625] font-semibold">Siam Sheikh</p>
-                        <button className="font-montserrat text-xs text-[#091625]/70 flex items-center font-semibold">Connect Wallet <MdKeyboardArrowRight className="text-xl" />                    </button>
+                        <p className="font-montserrat text-[#091625] font-semibold">{user?.name}</p>
+
+                        {
+                            ton.connected ?
+                                <button
+                                onClick={async () => {
+                                    await ton.disconnect();
+                                    window.location.reload();
+                                }}
+                                    className="font-montserrat text-xs text-[#091625]/70 flex items-center font-semibold">Disconnect Wallet <MdKeyboardArrowRight className="text-xl" />
+                                </button> :
+                                <button
+                                    onClick={async () => {
+                                        await ton.openModal();
+                                        window.location.reload();
+                                    }}
+                                    className="font-montserrat text-xs text-[#091625]/70 flex items-center font-semibold">Connect Wallet <MdKeyboardArrowRight className="text-xl" />
+                                </button>
+                        }
                     </div>
                 </div>
-                <p className="font-montserrat text-[#091625] font-semibold">30 ATOM</p>
+                <p className="font-montserrat text-[#091625] font-semibold">{user?.ba} ATOM</p>
             </div>
 
             <div className="p-3">
@@ -67,7 +100,7 @@ const Home = () => {
                                 <p className="font-bold text-white/80 capitalize">Watch and earn</p>
                                 <p className="font-medium capitalize text-white/40">watch ads</p>
                             </div>
-                            <button className="capitalize bg-white text-black px-5 h-fit py-1 font-montserrat font-medium rounded-full">watch</button>
+                            <button onClick={watch_ads} className="capitalize bg-white text-black px-5 h-fit py-1 font-montserrat font-medium rounded-full">watch</button>
                         </div>
                     </div>
                 </div>

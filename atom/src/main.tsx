@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <ContextUri>
           <TonConnectUIProvider manifestUrl="https://api.cofminer.com/manifest">
             <RouterProvider router={route} />
-            <Toaster />
+            <Toaster className=' font-montserrat font-semibold uppercase text-sm' />
           </TonConnectUIProvider>
         </ContextUri>
       </Provider>

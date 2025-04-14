@@ -9,7 +9,7 @@ const AuthenticateUser: RequestHandler = async (req, res, next) => {
             throw new Error("authorization token not found");
         }
 
-        verify(token, Env?.secret, (error, decode) => {
+        verify(token, Env?.secret, (error, decode:any) => {
             if (error) {
                 next(error);
             }

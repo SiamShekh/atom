@@ -28,7 +28,14 @@ const user = baseApi.injectEndpoints({
             query: (arg) => ({
                 url: "user/refer-code",
                 method: "PATCH",
-                body: {referCode:arg}
+                body: { referCode: arg }
+            }),
+            invalidatesTags: ["user"]
+        }),
+        WatchAds: build.mutation({
+            query: () => ({
+                url: "user/watch-ads",
+                method: "POST",
             }),
             invalidatesTags: ["user"]
         }),
@@ -37,7 +44,8 @@ const user = baseApi.injectEndpoints({
 
 export const {
     useInstanceMutation: userLogin,
-    useMyUserQuery: MyUser,
-    useReferlistQuery:Referlist,
-    useUpdateReferCodeMutation: UpdateReferCode
+    useLazyMyUserQuery: MyUser,
+    useReferlistQuery: Referlist,
+    useUpdateReferCodeMutation: UpdateReferCode,
+    useWatchAdsMutation: WatchAds
 } = user;

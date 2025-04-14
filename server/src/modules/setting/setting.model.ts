@@ -5,6 +5,8 @@ export interface setting {
     premiumUserInviteBonus: number
     genarelUserInviteBonus: number
     newAccountBonus: number
+    adsReward: number
+    adsLimit: number
 }
 
 const schema = new Schema<setting>({
@@ -24,6 +26,16 @@ const schema = new Schema<setting>({
         default: 500
     },
     referCommission:{
+        type: Number,
+        required: true,
+        default: 10
+    },
+    adsReward:{
+        type: Number,
+        required: true,
+        default: 100
+    },
+    adsLimit:{
         type: Number,
         required: true,
         default: 10

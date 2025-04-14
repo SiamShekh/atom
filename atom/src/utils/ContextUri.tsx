@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode, useEffect } from "react";
 import { useSettingQuery } from "../api/setting";
 import { setting, user } from "../types";
 import { MyUser } from "../api/user";
@@ -15,7 +15,11 @@ export const Provider = createContext<default_value>({
 
 const ContextUri = ({ children }: { children: ReactNode }) => {
     const { data, isLoading } = useSettingQuery(undefined);
-    const { data: user } = MyUser(undefined);
+    const [query, { data: user }] = MyUser();
+
+    useEffect(() => {
+        query(undefined);
+    }, [query])
 
     const value: default_value = {
         setting: data,

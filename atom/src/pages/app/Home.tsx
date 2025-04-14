@@ -1,21 +1,36 @@
 import { MdKeyboardArrowRight } from "react-icons/md";
 import ads_img from "../../assets/trading_image.webp";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Provider } from "../../utils/ContextUri";
 import { useTonConnectUI } from "@tonconnect/ui-react";
+import { WatchAds } from "../../api/user";
+import { QueryStatus } from "@reduxjs/toolkit/query";
+import { toast } from "sonner";
 
 const Home = () => {
     const { user } = useContext(Provider);
     const [ton] = useTonConnectUI();
-
+    const [mutation, { status, error }] = WatchAds();
     const watch_ads = () => {
-        // show_8930150().then(() => {
-        //     // You need to add your user reward function here, which will be executed after the user watches the ad.
-        //     // For more details, please refer to the detailed instructions.
-        //     alert('You have seen an ad!');
-        // })
+        show_8930150().then(() => {
+            mutation(undefined);
+        })
     }
 
+    useEffect(() => {
+
+        switch (status) {
+            case QueryStatus.fulfilled:
+                toast.dismiss();
+                toast.success("Successfuly watched");
+                break;
+
+            case QueryStatus.rejected:
+                toast.dismiss();
+                toast.error((error as { data: { msg: string } })?.data?.msg);
+                break;
+        }
+    }, [status, error])
 
 
     return (
@@ -29,10 +44,10 @@ const Home = () => {
                         {
                             ton.connected ?
                                 <button
-                                onClick={async () => {
-                                    await ton.disconnect();
-                                    window.location.reload();
-                                }}
+                                    onClick={async () => {
+                                        await ton.disconnect();
+                                        window.location.reload();
+                                    }}
                                     className="font-montserrat text-xs text-[#091625]/70 flex items-center font-semibold">Disconnect Wallet <MdKeyboardArrowRight className="text-xl" />
                                 </button> :
                                 <button
@@ -45,7 +60,7 @@ const Home = () => {
                         }
                     </div>
                 </div>
-                <p className="font-montserrat text-[#091625] font-semibold">{user?.ba} ATOM</p>
+                <p className="font-montserrat text-[#091625] font-semibold">{user?.balance} ATOM</p>
             </div>
 
             <div className="p-3">

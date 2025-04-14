@@ -3,16 +3,16 @@ import { UserModel } from "./user.model";
 import { isValid } from "@telegram-apps/init-data-node";
 import Env from "../../environment";
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
 import catchAsync from "../../utils/catch_async";
 
 export const userIntance = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
     const userBody = req.body.user;
+    if (!userBody) {
+        throw new Error("required data is missing");
+    }
+
     if (!isValid(req.body.init, Env.bot_token)) {
-        const isUser = await UserModel.findOne({ uid: userBody.id }).session(session);
+        const isUser = await UserModel.findOne({ uid: userBody.id });
 
         if (!isUser) {
             const createUser = await UserModel.create([{
@@ -22,7 +22,7 @@ export const userIntance = catchAsync(async (req: Request, res: Response, next: 
                 referCode: userBody.id,
                 referBy: req.body.startApp,
                 lastSeen: new Date()
-            }], { session });
+            }]);
 
             const payload = {
                 _id: createUser[0]?._id,
@@ -30,9 +30,6 @@ export const userIntance = catchAsync(async (req: Request, res: Response, next: 
             }
 
             const token = jwt.sign(payload, Env.secret);
-
-            await session.commitTransaction();
-            await session.endSession();
 
             res.send({ token });
             return;
@@ -44,17 +41,12 @@ export const userIntance = catchAsync(async (req: Request, res: Response, next: 
         }
 
         isUser.lastSeen = new Date();
-        await isUser.save({ session });
+        await isUser.save();
 
         const token = jwt.sign(payload, Env.secret);
-        await session.commitTransaction();
-        await session.endSession();
-
         res.send({ token });
         return;
     } else {
-        await session.abortTransaction();
-        await session.endSession();
         throw new Error("init token is invaild");
     }
 });

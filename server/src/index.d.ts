@@ -4,6 +4,6 @@ declare namespace Express {
             _id: string
             uid: number
             iat: number
-        } | string | JwtPayload | undefined
+        } 
     }
 }

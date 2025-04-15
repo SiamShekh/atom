@@ -39,6 +39,16 @@ const user = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["user"]
         }),
+        SpinWheel: build.mutation({
+            query: ({ rotate, type }: { rotate: number, type: "coin" | "ads" }) => ({
+                url: "user/spin",
+                method: "POST",
+                body: {
+                    rotate, type
+                }
+            }),
+            invalidatesTags: ["user"]
+        }),
     })
 });
 
@@ -47,5 +57,6 @@ export const {
     useLazyMyUserQuery: MyUser,
     useReferlistQuery: Referlist,
     useUpdateReferCodeMutation: UpdateReferCode,
-    useWatchAdsMutation: WatchAds
+    useWatchAdsMutation: WatchAds,
+    useSpinWheelMutation: SpinWheel
 } = user;

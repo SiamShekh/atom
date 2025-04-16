@@ -3,7 +3,8 @@ import { model, Schema, Types } from "mongoose";
 interface ads {
     userId: Types.ObjectId
     reward: number
-    createdAt: string
+    createdAt: Date
+    type: string
 }
 
 const schema = new Schema<ads>({
@@ -15,9 +16,14 @@ const schema = new Schema<ads>({
     reward: {
         type: Number,
         required: true
+    },
+    type: {
+        type: String,
+        required: true,
+        default: "ads"
     }
-},{
-    timestamps:true
+}, {
+    timestamps: true
 });
 
 export const AdsModel = model("ads", schema);

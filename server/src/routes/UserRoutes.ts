@@ -11,6 +11,7 @@ UserRoute.get("/", AuthenticateUser, user?.my_user);
 UserRoute.post("/watch-ads", AuthenticateUser, ads.watch_ads);
 UserRoute.post("/spin", AuthenticateUser, spin.spin_wheel);
 UserRoute.get("/referlist", AuthenticateUser, user?.referlist);
+UserRoute.get("/history", AuthenticateUser, user?.history);
 UserRoute.patch("/refer-code", AuthenticateUser, user?.update_refer_code);
 
 export default UserRoute;

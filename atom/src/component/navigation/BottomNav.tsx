@@ -30,9 +30,9 @@ const BottomNav = () => {
             href: '/app/invite'
         },
         {
-            title: "Ton Transection",
+            title: "Wallet",
             icon: <FaWallet />,
-            href: '/app/ton'
+            href: '/app/wallet'
         },
     ]
 

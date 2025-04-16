@@ -4,7 +4,6 @@ import Splash from "./pages/app/Splash";
 import Spin from "./pages/app/Spin";
 import Task from "./pages/app/Task";
 import Invite from "./pages/app/Invite";
-import TonTransection from "./pages/app/TonTransection";
 import ProtectUser from "./utils/ProtectUser";
 import App from "./pages/App";
 import Home from "./pages/app/Home";
@@ -13,6 +12,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import AddNewTask from "./pages/admin/AddNewTask";
 import TaskManagement from "./pages/admin/Task";
 import UpdateTask from "./pages/admin/UpdateTask";
+import Wallet from "./pages/app/Wallet";
 
 const route = createBrowserRouter([
     {
@@ -40,8 +40,8 @@ const route = createBrowserRouter([
                 element: <Invite />
             },
             {
-                path: 'ton',
-                element: <TonTransection />
+                path: 'wallet',
+                element: <Wallet />
             },
         ]
     },

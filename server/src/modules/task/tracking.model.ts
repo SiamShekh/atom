@@ -4,6 +4,7 @@ export interface tracking {
     userId: Types.ObjectId,
     taskId: Types.ObjectId
     point: number
+    createdAt: Date
 }
 
 const schema = new Schema<tracking>({

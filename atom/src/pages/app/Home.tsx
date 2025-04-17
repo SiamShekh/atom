@@ -6,6 +6,7 @@ import { useTonConnectUI } from "@tonconnect/ui-react";
 import { WatchAds } from "../../api/user";
 import { QueryStatus } from "@reduxjs/toolkit/query";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const { user } = useContext(Provider);
@@ -30,8 +31,9 @@ const Home = () => {
                 toast.error((error as { data: { msg: string } })?.data?.msg);
                 break;
         }
-    }, [status, error])
+    }, [status, error]);
 
+    const navigate = useNavigate();
 
     return (
         <div>
@@ -90,7 +92,7 @@ const Home = () => {
                                     <p className="font-montserrat font-medium text-xs text-white/50">up to +300</p>
                                 </div>
                             </div>
-                            <button className="capitalize bg-white text-black px-5 py-1 font-montserrat font-medium rounded-full">play</button>
+                            <button onClick={()=> navigate('/app/tap')} className="capitalize bg-white text-black px-5 py-1 font-montserrat font-medium rounded-full">play</button>
                         </div>
                         <div className="flex items-center justify-between gap-2 mt-3">
                             <div className="flex items-center gap-2">

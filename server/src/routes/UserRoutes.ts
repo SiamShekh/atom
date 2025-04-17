@@ -10,6 +10,7 @@ UserRoute.post("/", userIntance);
 UserRoute.get("/", AuthenticateUser, user?.my_user);
 UserRoute.post("/watch-ads", AuthenticateUser, ads.watch_ads);
 UserRoute.post("/spin", AuthenticateUser, spin.spin_wheel);
+UserRoute.post("/tap", AuthenticateUser, user.claim_tap_point);
 UserRoute.get("/referlist", AuthenticateUser, user?.referlist);
 UserRoute.get("/history", AuthenticateUser, user?.history);
 UserRoute.patch("/refer-code", AuthenticateUser, user?.update_refer_code);

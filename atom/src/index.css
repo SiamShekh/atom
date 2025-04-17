@@ -32,3 +32,20 @@
 		background-position: 0% 50%;
 	}
 }
+
+.click {
+	animation: top 1s;
+}
+
+@keyframes top {
+	0% {
+		top: 10;
+	}
+	50% {
+		top: 5;
+	}
+	100% {
+		top: 0;
+		display: none;
+	}
+}

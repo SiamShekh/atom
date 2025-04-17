@@ -13,6 +13,7 @@ import AddNewTask from "./pages/admin/AddNewTask";
 import TaskManagement from "./pages/admin/Task";
 import UpdateTask from "./pages/admin/UpdateTask";
 import Wallet from "./pages/app/Wallet";
+import TapGame from "./pages/app/TapGame";
 
 const route = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ const route = createBrowserRouter([
             {
                 path: 'wallet',
                 element: <Wallet />
+            },
+            {
+                path: 'tap',
+                element: <TapGame />
             },
         ]
     },

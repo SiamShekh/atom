@@ -70,11 +70,26 @@ const history = catchAsync(async (req, res) => {
     res.send(sorted?.slice(0, 10));
 });
 
+const claim_tap_point = catchAsync(async (req, res) => {
+    if (!req.body?.point) {
+        throw new Error("field missing");
+    }
+
+    const user = await UserModel.findById(req.user._id);
+    if (user) {
+        user.balance += req.body.point;
+        await user.save({});
+    }
+
+    res.send({status: true});
+});
+
 const user = {
     my_user,
     referlist,
     update_refer_code,
-    history
+    history,
+    claim_tap_point
 }
 
 export default user;

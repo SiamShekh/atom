@@ -56,6 +56,16 @@ const user = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["user"]
         }),
+        TapCoin: build.mutation({
+            query: (arg) => ({
+                url: "user/tap",
+                method: "POST",
+                body: {
+                    point: arg
+                }
+            }),
+            invalidatesTags: ["user"]
+        }),
     })
 });
 
@@ -66,5 +76,6 @@ export const {
     useUpdateReferCodeMutation: UpdateReferCode,
     useWatchAdsMutation: WatchAds,
     useSpinWheelMutation: SpinWheel,
-    useHistoryQuery: History
+    useHistoryQuery: History,
+    useTapCoinMutation: TapCoin
 } = user;

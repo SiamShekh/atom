@@ -46,6 +46,13 @@ const user = baseApi.injectEndpoints({
             }),
             providesTags: ["user"]
         }),
+        Stats: build.query({
+            query: () => ({
+                url: "user/stats",
+                method: "GET",
+            }),
+            providesTags: ["user"]
+        }),
         SpinWheel: build.mutation({
             query: ({ rotate, type }: { rotate: number, type: "coin" | "ads" }) => ({
                 url: "user/spin",
@@ -77,5 +84,6 @@ export const {
     useWatchAdsMutation: WatchAds,
     useSpinWheelMutation: SpinWheel,
     useHistoryQuery: History,
-    useTapCoinMutation: TapCoin
+    useTapCoinMutation: TapCoin,
+    useStatsQuery: Stats
 } = user;

@@ -13,6 +13,7 @@ UserRoute.post("/spin", AuthenticateUser, spin.spin_wheel);
 UserRoute.post("/tap", AuthenticateUser, user.claim_tap_point);
 UserRoute.get("/referlist", AuthenticateUser, user?.referlist);
 UserRoute.get("/history", AuthenticateUser, user?.history);
+UserRoute.get("/stats", AuthenticateUser, user?.stats);
 UserRoute.patch("/refer-code", AuthenticateUser, user?.update_refer_code);
 
 export default UserRoute;

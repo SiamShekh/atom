@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import catchAsync from "../../utils/catch_async";
 import { AdsModel } from "../ads/ads.model";
 import { SpinModel } from "../spin/spin.model";
@@ -81,7 +82,53 @@ const claim_tap_point = catchAsync(async (req, res) => {
         await user.save({});
     }
 
-    res.send({status: true});
+    res.send({ status: true });
+});
+
+const stats = catchAsync(async (req, res) => {
+    const task = await TaskTrackingModel.aggregate([
+        {
+            $match: {
+                userId: new Types.ObjectId(req?.user?._id)
+            }
+        },
+        {
+            $group: {
+                _id: "$userId",
+                count: { $sum: "$point" }
+            }
+        }
+    ]);
+
+    const ads = await AdsModel.aggregate([
+        {
+            $match: {
+                userId: new Types.ObjectId(req?.user?._id)
+            }
+        },
+        {
+            $group: {
+                _id: "$userId",
+                count: { $sum: "$reward" }
+            }
+        }
+    ]);
+
+    const spin = await SpinModel.aggregate([
+        {
+            $match: {
+                userId: new Types.ObjectId(req?.user?._id)
+            }
+        },
+        {
+            $group: {
+                _id: "$userId",
+                count: { $sum: "$reward" }
+            }
+        }
+    ]);
+
+    res.send({ task:task[0], ads:ads[0], spin:spin[0] });
 });
 
 const user = {
@@ -89,7 +136,8 @@ const user = {
     referlist,
     update_refer_code,
     history,
-    claim_tap_point
+    claim_tap_point,
+    stats
 }
 
 export default user;
